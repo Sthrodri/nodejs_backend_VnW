@@ -2,6 +2,8 @@ const express = require('express')
 
 const app = express()
 
+app.use(express.json())
+
 app.get('/', (req, res) => {
     res.send('API de filmes')
 })
@@ -28,28 +30,20 @@ app.get('/filmes', (req, res) => {
     res.send(filmes)
 })
 
-app.post('/filmes', (req, res) => {
-    const novofilme = {
-        id: filmes.length + 1,
-        titulo: 'Senhor dos Anéis',
-        genero: 'Aventura'
-    }
-    filmes.push(novofilme)
+app.get('/filmes/:id', (req, res) => {
+    const idUrl = Number(req.params.id)
+    const filmesEncontrados = filmes.find(filmes => filmes.id === idUrl)
+
+    res.json(filmesEncontrados)
 })
 
+app.post('/filmes', (req, res) => {
+    
+    filmes.push(req.body)
 
-/*
-//gambiarra para visualizar o novo filme adicionado.
-app.get('/novo-filmes', (req, res) => {
-    const novofilme = {
-        id: filmes.length + 1,
-        titulo: 'Senhor dos Anéis',
-        genero: 'Aventura'
-    }
-    filmes.push(novofilme)
-    res.send(novofilme)
-})*/
+    res.send("Filme adicionado com sucesso!")
 
+})
 
 const port = 3000
 
